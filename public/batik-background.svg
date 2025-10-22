@@ -1,0 +1,82 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Batik Pattern Definition inspired by your design -->
+    <pattern id="batikPattern" x="0" y="0" width="400" height="400" patternUnits="userSpaceOnUse">
+      <!-- Deep navy base like your image -->
+      <rect width="400" height="400" fill="#0f1b3c"/>
+      
+      <!-- Large paisley shapes with blue gradient -->
+      <g opacity="0.9">
+        <!-- Main paisley elements -->
+        <path d="M50 80 Q90 40 140 80 Q160 120 140 160 Q100 190 70 160 Q40 120 50 80 Z" 
+              fill="#2563eb" stroke="#60a5fa" stroke-width="2" opacity="0.8"/>
+        <path d="M200 50 Q260 10 320 50 Q350 100 320 150 Q260 180 220 150 Q180 100 200 50 Z" 
+              fill="#1d4ed8" stroke="#ef4444" stroke-width="2" opacity="0.9"/>
+        <path d="M280 200 Q330 160 380 200 Q400 250 380 300 Q330 330 300 300 Q260 250 280 200 Z" 
+              fill="#3b82f6" stroke="#fbbf24" stroke-width="1.5" opacity="0.7"/>
+        
+        <!-- Smaller paisley elements -->
+        <path d="M120 250 Q150 220 180 250 Q190 280 180 310 Q150 330 130 310 Q110 280 120 250 Z" 
+              fill="#1e40af" stroke="#f8fafc" stroke-width="1" opacity="0.8"/>
+        <path d="M30 200 Q60 170 90 200 Q100 230 90 260 Q60 280 40 260 Q20 230 30 200 Z" 
+              fill="#2563eb" stroke="#dc2626" stroke-width="1" opacity="0.6"/>
+        
+        <!-- Floral motifs -->
+        <circle cx="100" cy="120" r="12" fill="#ef4444" opacity="0.9"/>
+        <circle cx="105" cy="115" r="6" fill="#f8fafc" opacity="0.8"/>
+        <circle cx="300" cy="280" r="15" fill="#dc2626" opacity="0.8"/>
+        <circle cx="305" cy="275" r="8" fill="#60a5fa" opacity="0.9"/>
+        <circle cx="180" cy="150" r="10" fill="#fbbf24" opacity="0.7"/>
+        <circle cx="350" cy="120" r="8" fill="#f8fafc" opacity="0.8"/>
+        
+        <!-- Decorative swirls and curves -->
+        <path d="M150 180 Q180 150 210 180 Q190 210 160 200 Q130 210 150 180" 
+              fill="none" stroke="#ef4444" stroke-width="3" opacity="0.8"/>
+        <path d="M250 320 Q290 280 330 320 Q300 360 270 350 Q240 360 250 320" 
+              fill="none" stroke="#60a5fa" stroke-width="2" opacity="0.7"/>
+        <path d="M80 350 Q120 310 160 350 Q130 390 100 380 Q70 390 80 350" 
+              fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.6"/>
+        
+        <!-- Small decorative dots -->
+        <circle cx="90" cy="90" r="3" fill="#f8fafc" opacity="0.9"/>
+        <circle cx="110" cy="110" r="2" fill="#ef4444" opacity="0.8"/>
+        <circle cx="200" cy="100" r="4" fill="#60a5fa" opacity="0.7"/>
+        <circle cx="320" cy="80" r="3" fill="#fbbf24" opacity="0.8"/>
+        <circle cx="250" cy="180" r="2" fill="#f8fafc" opacity="0.9"/>
+        <circle cx="80" cy="300" r="3" fill="#dc2626" opacity="0.7"/>
+        <circle cx="370" cy="350" r="4" fill="#3b82f6" opacity="0.8"/>
+        <circle cx="150" cy="350" r="2" fill="#60a5fa" opacity="0.9"/>
+        
+        <!-- Leaf and petal patterns -->
+        <ellipse cx="220" cy="280" rx="20" ry="12" fill="#1e40af" opacity="0.7" transform="rotate(45 220 280)"/>
+        <ellipse cx="340" cy="180" rx="15" ry="10" fill="#2563eb" opacity="0.8" transform="rotate(-30 340 180)"/>
+        <ellipse cx="60" cy="150" rx="18" ry="8" fill="#3b82f6" opacity="0.6" transform="rotate(60 60 150)"/>
+        
+        <!-- Traditional geometric elements -->
+        <polygon points="180,200 195,215 210,200 195,185" fill="#ef4444" opacity="0.8"/>
+        <polygon points="320,260 340,280 360,260 340,240" fill="#60a5fa" opacity="0.9"/>
+        <polygon points="120,320 135,335 150,320 135,305" fill="#fbbf24" opacity="0.7"/>
+        <polygon points="280,120 295,135 310,120 295,105" fill="#f8fafc" opacity="0.8"/>
+        
+        <!-- Dotted borders and decorative lines -->
+        <path d="M20 20 Q200 20 380 20" fill="none" stroke="#60a5fa" stroke-width="1" 
+              stroke-dasharray="3,3" opacity="0.5"/>
+        <path d="M380 380 Q200 380 20 380" fill="none" stroke="#ef4444" stroke-width="1" 
+              stroke-dasharray="3,3" opacity="0.5"/>
+        <path d="M20 200 Q200 200 380 200" fill="none" stroke="#fbbf24" stroke-width="1" 
+              stroke-dasharray="2,4" opacity="0.4"/>
+      </g>
+    </pattern>
+    
+    <!-- Gradient overlays for depth -->
+    <radialGradient id="overlayGradient" cx="50%" cy="50%" r="80%">
+      <stop offset="0%" style="stop-color:rgba(59,130,246,0.1);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(15,27,60,0.2);stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Apply the batik pattern -->
+  <rect width="100%" height="100%" fill="url(#batikPattern)"/>
+  <!-- Add subtle gradient overlay -->
+  <rect width="100%" height="100%" fill="url(#overlayGradient)"/>
+</svg>
