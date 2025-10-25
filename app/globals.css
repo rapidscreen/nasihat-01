@@ -17,5 +17,76 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: "Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
+
+* {
+  font-family: "Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 30px rgba(59, 130, 246, 0.6));
+  }
+}
+
+.nasihat-logo-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.metal-border {
+  padding: 20px 60px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: 
+    linear-gradient(145deg, rgba(255,255,255,0.8) 0%, rgba(150,150,150,0.1) 40%, rgba(255,255,255,0.8) 100%) border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+  text-align: center;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.metal-shadow {
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    inset 0 1px 0 rgba(0,0,0,0.1),
+    0 0 5px rgba(255,255,255,0.3),
+    0 0 25px rgba(255,255,255,0.01); 
+}
+
+.sidebar-shadow {
+  box-shadow: 
+    inset 2px 0 0 rgba(255,255,255,0.15),
+    inset 0 2px 0 rgba(255,255,255,0.12),
+    inset -1px 0 0 rgba(255,255,255,0.05),
+    0 0 20px rgba(255,255,255,0.08),
+    2px 0 15px rgba(0,0,0,0.3);
+}
+
+.nasihat-brand-text {
+  font-family: "Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 120%;
+  letter-spacing: 0%;
+  color: white;
+}
+
+.profile-icon-shadow {
+  box-shadow: 
+    0 0 10px rgba(255,255,255,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    0 2px 8px rgba(0,0,0,0.3);
+}
+
