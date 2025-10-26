@@ -15,6 +15,27 @@ export default function JobsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedJobs, setExpandedJobs] = useState<Set<number>>(new Set(jobsData.map(job => job.id)));
   const [isPending, startTransition] = useTransition();
+  const [isAnimating, setIsAnimating] = useState(true);
+
+  // Trigger animation when filter changes
+  React.useEffect(() => {
+    setIsAnimating(true);
+    const timer = setTimeout(() => {
+      setIsAnimating(false);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [filter]);
+
+  // Trigger animation when search results change
+  React.useEffect(() => {
+    if (searchQuery.trim()) {
+      setIsAnimating(true);
+      const timer = setTimeout(() => {
+        setIsAnimating(false);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [searchQuery]);
 
   const getCompanyLogoUrl = (company: string) => {
     // Map known companies to their actual domains
@@ -229,13 +250,12 @@ export default function JobsPage() {
         </DashboardHeader>
 
         <div 
-          className={`min-h-screen p-6 transition-colors duration-200 relative ${
-            isDarkMode ? 'bg-[#192636]' : 'bg-[#fbfbfb]'
-          }`} 
+          className={`min-h-screen p-6 transition-colors duration-200 relative`} 
           style={{
-            background: isDarkMode 
+            backgroundImage: isDarkMode 
               ? 'linear-gradient(to top, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 20%, rgba(59, 130, 246, 0.04) 40%, rgba(59, 130, 246, 0.02) 60%, rgba(59, 130, 246, 0.01) 80%, #192636 100%)'
               : 'linear-gradient(to top, rgba(251, 146, 60, 0.12) 0%, rgba(251, 191, 36, 0.08) 20%, rgba(253, 224, 71, 0.06) 40%, rgba(254, 240, 138, 0.04) 60%, rgba(254, 249, 195, 0.02) 80%, #fbfbfb 100%)',
+            backgroundColor: isDarkMode ? '#192636' : '#fbfbfb',
             backgroundAttachment: 'fixed',
             backgroundSize: '100% 100vh',
             backgroundRepeat: 'no-repeat'
@@ -245,7 +265,7 @@ export default function JobsPage() {
           <div 
             className="fixed inset-0 pointer-events-none"
             style={{
-              background: isDarkMode 
+              backgroundImage: isDarkMode 
                 ? 'linear-gradient(to top, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.04) 30%, rgba(59, 130, 246, 0.02) 50%, transparent 70%)'
                 : 'linear-gradient(to top, rgba(251, 146, 60, 0.06) 0%, rgba(251, 191, 36, 0.04) 30%, rgba(253, 224, 71, 0.03) 50%, transparent 70%)',
               zIndex: 1
@@ -274,28 +294,33 @@ export default function JobsPage() {
                     transform: isPending ? 'scale(0.98)' : 'scale(1)'
                   }}
                 >
-                  {isPending && activeTab === tab ? (
-                    <span className="flex items-center space-x-2">
-                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" className="opacity-25"></circle>
-                        <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" className="opacity-75"></path>
-                      </svg>
-                      <span>{tab}</span>
-                    </span>
-                  ) : (
-                    tab
-                  )}
+                  {tab}
                 </button>
               ))}
             </div>
 
-            <div className={`space-y-4 transition-opacity duration-300 ${isPending ? 'opacity-60' : 'opacity-100'}`}>
-              {filteredJobs.map((job) => (
-                <div key={job.id} className={`rounded-lg transition-all duration-200 ${
-                  isDarkMode 
-                    ? 'job-card-glow'
-                    : 'job-card-glow-light'
-                }`}>
+            <div className={`space-y-4 transition-all ${isPending ? 'opacity-60' : 'opacity-100'}`}>
+              {filteredJobs.map((job, index) => (
+                <div 
+                  key={job.id} 
+                  className={`rounded-lg transition-transform duration-[1500ms] ease-out ${
+                    isDarkMode 
+                      ? 'job-card-glow'
+                      : 'job-card-glow-light'
+                  }`}
+                  style={{
+                    transform: isAnimating 
+                      ? 'translateX(-100vw)' 
+                      : 'translateX(0px)',
+                    transitionDelay: isAnimating 
+                      ? '0ms' 
+                      : `${index * 200}ms`,
+                    zIndex: filteredJobs.length - index,
+                    position: 'relative',
+                    opacity: isAnimating ? 0 : 1,
+                    willChange: 'transform, opacity'
+                  }}
+                >
                   <hr className={`mx-6 transition-colors duration-200 ${
                     isDarkMode ? 'border-slate-600' : 'border-gray-200'
                   }`} />
@@ -318,9 +343,7 @@ export default function JobsPage() {
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
-                          <p className={`text-sm transition-colors font-neue-haas ${
-                            isDarkMode ? 'text-slate-300' : 'text-gray-600'
-                          }`}>
+                          <p className="text-sm font-neue-haas" style={{ color: '#ffffff' }}>
                             {job.company}
                           </p>
                           
@@ -331,9 +354,7 @@ export default function JobsPage() {
                                 alt="Website" 
                                 className="w-3 h-3"
                                 style={{
-                                  filter: isDarkMode 
-                                    ? 'brightness(0) saturate(100%) invert(68%) sepia(8%) saturate(851%) hue-rotate(201deg) brightness(97%) contrast(90%)'
-                                    : 'brightness(0) saturate(100%) invert(45%) sepia(6%) saturate(413%) hue-rotate(201deg) brightness(93%) contrast(89%)'
+                                  filter: 'brightness(0) saturate(100%) invert(100%)'
                                 }}
                               />
                               <button
@@ -342,16 +363,13 @@ export default function JobsPage() {
                                   e.stopPropagation();
                                   window.open(`https://${job.website}`, '_blank', 'noopener,noreferrer');
                                 }}
-                                className={`text-xs underline font-semibold hover:no-underline transition-colors font-neue-haas cursor-pointer ${
-                                  isDarkMode ? 'text-slate-400 hover:text-slate-300' : 'text-gray-500 hover:text-gray-700'
-                                }`}
+                                className="text-xs underline font-semibold hover:no-underline font-neue-haas cursor-pointer"
+                                style={{ color: '#ffffff' }}
                               >
                                 {job.website}
                               </button>
                             </div>
-                            <span className={`text-xs transition-colors font-neue-haas ${
-                              isDarkMode ? 'text-slate-400' : 'text-gray-500'
-                            }`}>
+                            <span className="text-xs font-neue-haas" style={{ color: '#ffffff' }}>
                               • {job.postedTime}
                             </span>
                           </div>
@@ -426,21 +444,36 @@ export default function JobsPage() {
                           <div className="flex items-center space-x-3">
                             {/* Standalone Bookmark Button */}
                             <button 
-                              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors button-inner-glow cursor-pointer hover:bg-opacity-10 hover:bg-gray-500"
+                              className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-10 hover:bg-gray-500"
                               style={{ 
-                                backgroundColor: 'transparent'
+                                backgroundColor: 'transparent',
+                                border: job.isSaved 
+                                  ? '0.5px solid #FFD700' 
+                                  : '0.5px solid rgba(255,255,255,0.3)',
+                                boxShadow: job.isSaved 
+                                  ? '0 0 0 0.5px rgba(255, 215, 0, 0.8), 0 0 8px rgba(255, 215, 0, 0.4), 0 0 16px rgba(255, 215, 0, 0.2)'
+                                  : 'none'
+                              }}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                // Toggle bookmark functionality would go here
+                                console.log('Bookmark toggled for job:', job.id);
                               }}
                             >
-                              <img 
-                                src="/icons/bookmark.svg" 
-                                alt="Bookmark" 
-                                className="w-4 h-4"
-                                style={{ 
-                                  filter: isDarkMode 
-                                    ? 'brightness(0) saturate(100%) invert(100%)' 
-                                    : 'brightness(0) saturate(100%) invert(45%)'
-                                }}
-                              />
+                              {/* TikTok/Instagram style bookmark */}
+                              <svg 
+                                width="16" 
+                                height="16" 
+                                viewBox="0 0 24 24" 
+                                fill={job.isSaved ? "#FFD700" : "none"}
+                                stroke={job.isSaved ? "#FFD700" : "#ffffff"}
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                              </svg>
                             </button>
 
                             {/* Apply/Applied Button */}
@@ -482,7 +515,7 @@ export default function JobsPage() {
 
                         {/* Collapsible Content */}
                         <div 
-                          className="overflow-hidden transition-all duration-[2000ms] -ml-16"
+                          className="overflow-hidden transition-all duration-[3000ms] -ml-16"
                           style={{
                             maxHeight: expandedJobs.has(job.id) ? '1000px' : '0',
                             opacity: expandedJobs.has(job.id) ? 1 : 0,
@@ -491,39 +524,48 @@ export default function JobsPage() {
                         >
                           <div className="pt-0">
                             {/* HR Separator */}
-                            <hr className={`mb-4 transition-all duration-[2000ms] ${
+                            <hr className={`mb-4 transition-all duration-[3000ms] ${
                               isDarkMode ? 'border-slate-600' : 'border-gray-200'
                             }`} 
                             style={{
                               boxShadow: isDarkMode 
-                                ? '0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)' 
-                                : '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+                                ? '0 2px 8px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.1)' 
+                                : '0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.8)',
                               transform: expandedJobs.has(job.id) ? 'translateY(0)' : 'translateY(-20px)',
                               opacity: expandedJobs.has(job.id) ? 1 : 0,
                               transitionTimingFunction: expandedJobs.has(job.id) ? 'ease-out' : 'ease-in',
-                              transitionDelay: expandedJobs.has(job.id) ? '200ms' : '0ms'
+                              transitionDelay: expandedJobs.has(job.id) ? '300ms' : '0ms'
                             }} />
 
                             {/* Job Description Container with Border */}
-                            <div className={`p-4 rounded-lg border transition-all duration-[2000ms] ${
+                            <div className={`p-4 rounded-lg border transition-all duration-[3000ms] ${
                               isDarkMode 
-                                ? 'border-slate-600 bg-slate-800/50' 
-                                : 'border-gray-200 bg-gray-50/50'
+                                ? 'border-slate-600' 
+                                : 'border-gray-200'
                             }`}
                             style={{
+                              background: isDarkMode 
+                                ? 'linear-gradient(to bottom, #232f3d 0%, #202a37 40%, #1e2833 70%, #1a252f 100%), radial-gradient(ellipse 80% 40% at center bottom, rgba(59, 130, 246, 0.1) 0%, transparent 60%)'
+                                : 'linear-gradient(to bottom, #fdfdfd 0%, #fafafa 40%, #f8f8f8 70%, #f5f5f5 100%), radial-gradient(ellipse 80% 40% at center bottom, rgba(59, 130, 246, 0.05) 0%, transparent 60%)',
+                              boxShadow: isDarkMode
+                                ? 'inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 -1px 2px rgba(59, 130, 246, 0.08), 0 1px 3px rgba(0, 0, 0, 0.15)'
+                                : 'inset 0 2px 4px rgba(0, 0, 0, 0.05), inset 0 -1px 2px rgba(59, 130, 246, 0.04), 0 1px 3px rgba(0, 0, 0, 0.08)',
                               transform: expandedJobs.has(job.id) ? 'translateY(0)' : 'translateY(-20px)',
                               opacity: expandedJobs.has(job.id) ? 1 : 0,
                               transitionTimingFunction: expandedJobs.has(job.id) ? 'ease-out' : 'ease-in',
-                              transitionDelay: expandedJobs.has(job.id) ? '400ms' : '0ms'
+                              transitionDelay: expandedJobs.has(job.id) ? '600ms' : '0ms'
                             }}>
                               <p 
-                                className="text-sm leading-relaxed transition-all duration-[2000ms] font-neue-haas"
+                                className="text-sm leading-relaxed transition-all duration-[3000ms] font-neue-haas"
                                 style={{ 
-                                  color: '#ffffff',
+                                  color: '#f8fafc',
+                                  fontWeight: '500',
+                                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)',
+                                  letterSpacing: '0.025em',
                                   transform: expandedJobs.has(job.id) ? 'translateY(0)' : 'translateY(-10px)',
                                   opacity: expandedJobs.has(job.id) ? 1 : 0,
                                   transitionTimingFunction: expandedJobs.has(job.id) ? 'ease-out' : 'ease-in',
-                                  transitionDelay: expandedJobs.has(job.id) ? '600ms' : '0ms'
+                                  transitionDelay: expandedJobs.has(job.id) ? '900ms' : '0ms'
                                 }}
                               >
                                 {job.description}
@@ -538,9 +580,20 @@ export default function JobsPage() {
               ))}
               
               {filteredJobs.length === 0 && (
-                <div className={`text-center py-12 transition-colors ${
-                  isDarkMode ? 'text-slate-400' : 'text-gray-500'
-                }`}>
+                <div 
+                  className={`text-center py-12 transition-all duration-[1500ms] ease-out ${
+                    isDarkMode ? 'text-slate-400' : 'text-gray-500'
+                  }`}
+                  style={{
+                    transform: isAnimating 
+                      ? 'translateX(-100vw)' 
+                      : 'translateX(0px)',
+                    opacity: isAnimating ? 0 : 1,
+                    position: 'relative',
+                    zIndex: 1,
+                    willChange: 'transform, opacity'
+                  }}
+                >
                   <p className="font-neue-haas">No jobs found matching your criteria.</p>
                 </div>
               )}

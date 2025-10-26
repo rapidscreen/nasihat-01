@@ -24,22 +24,32 @@ body {
   font-family: "Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-@keyframes glow {
-  0%, 100% {
-    filter: 
-      drop-shadow(0 0 8px rgba(30, 58, 138, 0.7)) 
-      drop-shadow(0 0 15px rgba(30, 58, 138, 0.4))
-      drop-shadow(0 0 30px rgba(30, 58, 138, 0.3))
-      drop-shadow(0 0 45px rgba(30, 58, 138, 0.2));
+/* Light Bulb Animation for New Nasihat.ai Logo */
+@keyframes lightbulbPulse {
+  0% {
+    filter: drop-shadow(0 0 40px rgba(74, 144, 226, 0.7)) drop-shadow(0 0 80px rgba(74, 144, 226, 0.4)) drop-shadow(0 8px 25px rgba(0, 0, 0, 0.3)) brightness(1.1) hue-rotate(0deg);
+  }
+  25% {
+    filter: drop-shadow(0 0 50px rgba(74, 144, 226, 0.9)) drop-shadow(0 0 100px rgba(74, 144, 226, 0.6)) drop-shadow(0 8px 25px rgba(0, 0, 0, 0.3)) brightness(1.3) hue-rotate(10deg);
   }
   50% {
-    filter: 
-      drop-shadow(0 0 25px rgba(30, 58, 138, 1)) 
-      drop-shadow(0 0 40px rgba(30, 58, 138, 0.8)) 
-      drop-shadow(0 0 60px rgba(30, 58, 138, 0.6))
-      drop-shadow(0 0 80px rgba(30, 58, 138, 0.4))
-      drop-shadow(0 0 100px rgba(30, 58, 138, 0.3));
+    filter: drop-shadow(0 0 60px rgba(74, 144, 226, 1.0)) drop-shadow(0 0 120px rgba(74, 144, 226, 0.8)) drop-shadow(0 8px 25px rgba(0, 0, 0, 0.3)) brightness(1.5) hue-rotate(20deg);
   }
+  75% {
+    filter: drop-shadow(0 0 50px rgba(74, 144, 226, 0.9)) drop-shadow(0 0 100px rgba(74, 144, 226, 0.6)) drop-shadow(0 8px 25px rgba(0, 0, 0, 0.3)) brightness(1.3) hue-rotate(10deg);
+  }
+  100% {
+    filter: drop-shadow(0 0 40px rgba(74, 144, 226, 0.7)) drop-shadow(0 0 80px rgba(74, 144, 226, 0.4)) drop-shadow(0 8px 25px rgba(0, 0, 0, 0.3)) brightness(1.1) hue-rotate(0deg);
+  }
+}
+
+.nasihat-lightbulb-glow {
+  animation: lightbulbPulse 3s ease-in-out infinite;
+}
+
+.nasihat-lightbulb-glow:hover {
+  animation-duration: 1.5s;
+  transform: scale(1.1) rotate(5deg);
 }
 
 @keyframes sidebarGlow {
@@ -81,7 +91,7 @@ body {
 
 .theme-transition {
   position: relative;
-  transition: background-color 10s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Removed conflicting background-color transition */
 }
 
 .theme-transition::before {
@@ -93,13 +103,9 @@ body {
   bottom: 0;
   background-color: inherit;
   clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
-  transition: clip-path 3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Removed conflicting clip-path transition */
   z-index: -1;
   pointer-events: none;
-}
-
-.theme-transition.transitioning::before {
-  animation: diagonalSweep 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .metal-border {
@@ -228,28 +234,117 @@ body {
 @keyframes glowLight {
   0%, 100% {
     filter: 
-      drop-shadow(0 0 15px rgba(30, 58, 138, 1)) 
-      drop-shadow(0 0 30px rgba(30, 58, 138, 0.8))
-      drop-shadow(0 0 45px rgba(30, 58, 138, 0.6))
-      drop-shadow(0 0 60px rgba(30, 58, 138, 0.4));
+      drop-shadow(0 0 20px rgba(30, 58, 138, 1)) 
+      drop-shadow(0 0 40px rgba(30, 58, 138, 0.9))
+      drop-shadow(0 0 65px rgba(30, 58, 138, 0.7))
+      drop-shadow(0 0 90px rgba(30, 58, 138, 0.5))
+      drop-shadow(0 0 120px rgba(30, 58, 138, 0.3));
   }
   50% {
     filter: 
-      drop-shadow(0 0 40px rgba(30, 58, 138, 1)) 
-      drop-shadow(0 0 70px rgba(30, 58, 138, 1)) 
-      drop-shadow(0 0 100px rgba(30, 58, 138, 0.9))
-      drop-shadow(0 0 120px rgba(30, 58, 138, 0.7))
-      drop-shadow(0 0 150px rgba(30, 58, 138, 0.5));
+      drop-shadow(0 0 50px rgba(30, 58, 138, 1)) 
+      drop-shadow(0 0 90px rgba(30, 58, 138, 1)) 
+      drop-shadow(0 0 130px rgba(30, 58, 138, 0.9))
+      drop-shadow(0 0 170px rgba(30, 58, 138, 0.7))
+      drop-shadow(0 0 220px rgba(30, 58, 138, 0.5))
+      drop-shadow(0 0 280px rgba(30, 58, 138, 0.3));
   }
 }
 
 .toggle-track-shadow {
   box-shadow: 
-    inset 0 3px 6px rgba(0,0,0,0.3),
-    inset 0 -2px 2px rgba(255,255,255,0.2),
+    inset 0 3px 6px rgba(0,0,0,0.4),
+    inset 0 -2px 4px rgba(0,0,0,0.3),
+    inset 2px 0 5px rgba(0,0,0,0.35),
+    inset -2px 0 5px rgba(0,0,0,0.35),
+    inset 0 1px 2px rgba(255,255,255,0.15),
+    0 0 8px rgba(0,0,0,0.1),
+    0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* Enhanced Toggle Track Styles */
+.toggle-track-on {
+  background: linear-gradient(145deg, #1a5d4a 0%, #2dd179 20%, #1a5d4a 80%, #16503f 100%);
+  box-shadow: 
+    inset 0 3px 8px rgba(0,0,0,0.4),
+    inset 0 -2px 4px rgba(45,209,121,0.3),
+    inset 0 0 0 1px rgba(45,209,121,0.6),
+    0 0 15px rgba(45,209,121,0.3),
+    0 3px 12px rgba(0,0,0,0.2),
+    0 6px 20px rgba(0,0,0,0.15),
+    0 0 25px rgba(45,209,121,0.2);
+  border: 1px solid rgba(45,209,121,0.8);
+}
+
+.toggle-track-off {
+  background: linear-gradient(145deg, #374151 0%, #6b7280 20%, #374151 80%, #1f2937 100%);
+  box-shadow: 
+    inset 0 3px 8px rgba(0,0,0,0.4),
+    inset 0 -2px 4px rgba(107,114,128,0.3),
+    inset 0 0 0 1px rgba(107,114,128,0.6),
     0 0 12px rgba(0,0,0,0.2),
     0 3px 15px rgba(0,0,0,0.15),
-    0 0 20px rgba(255,255,255,0.1);
+    0 0 20px rgba(255,255,255,0.05);
+  border: 1px solid rgba(107,114,128,0.8);
+}
+
+/* Enhanced Toggle Circle Styles */
+.toggle-circle {
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    inset 0 -1px 0 rgba(0,0,0,0.08),
+    inset 0 0 4px rgba(255,255,255,0.3),
+    0 0 0 1px rgba(0,0,0,0.12),
+    0 0 4px rgba(0,0,0,0.15),
+    0 0 8px rgba(255,255,255,0.1);
+  background: linear-gradient(145deg, #ffffff 0%, #fafbfc 25%, #ffffff 50%, #f8fafc 75%, #ffffff 100%);
+  border: 1px solid rgba(255,255,255,0.9);
+}
+
+/* Small Toggle Track Styles */
+.toggle-track-small-on {
+  background: linear-gradient(145deg, #1a5d4a 0%, #2dd179 20%, #1a5d4a 80%, #16503f 100%);
+  box-shadow: 
+    inset 0 2px 6px rgba(0,0,0,0.35),
+    inset 0 -1px 3px rgba(45,209,121,0.25),
+    inset 0 0 0 1px rgba(45,209,121,0.5),
+    0 0 10px rgba(45,209,121,0.25),
+    0 2px 8px rgba(0,0,0,0.18),
+    0 4px 15px rgba(0,0,0,0.12),
+    0 0 18px rgba(45,209,121,0.15);
+  border: 1px solid rgba(45,209,121,0.7);
+}
+
+.toggle-track-small-off {
+  background: linear-gradient(145deg, #374151 0%, #6b7280 20%, #374151 80%, #1f2937 100%);
+  box-shadow: 
+    inset 0 2px 6px rgba(0,0,0,0.35),
+    inset 0 -1px 3px rgba(107,114,128,0.25),
+    inset 0 0 0 1px rgba(107,114,128,0.5),
+    0 0 8px rgba(0,0,0,0.18),
+    0 2px 10px rgba(0,0,0,0.12),
+    0 0 15px rgba(255,255,255,0.04);
+  border: 1px solid rgba(107,114,128,0.7);
+}
+
+/* Small Toggle Circle Styles */
+.toggle-circle-small {
+  box-shadow: 
+    inset 0 0.5px 0 rgba(255,255,255,0.6),
+    inset 0 -0.5px 0 rgba(0,0,0,0.08),
+    inset 0 0 3px rgba(255,255,255,0.3),
+    0 0 0 1px rgba(0,0,0,0.12),
+    0 0 3px rgba(0,0,0,0.15),
+    0 0 6px rgba(255,255,255,0.1);
+  background: linear-gradient(145deg, #ffffff 0%, #fafbfc 25%, #ffffff 50%, #f8fafc 75%, #ffffff 100%);
+  border: 1px solid rgba(255,255,255,0.9);
+}
+
+/* Super white text utility class - Maximum white with enhanced visibility */
+.text-super-white {
+  color: #ffffff !important;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.8) !important;
+  font-weight: inherit;
 }
 
 /* Icon shadows that follow the shape */
@@ -275,6 +370,39 @@ body {
     drop-shadow(0 0 10px rgba(255,255,255,0.3))
     drop-shadow(0 4px 15px rgba(0,0,0,0.2));
   transition: filter 2s ease-in-out;
+}
+
+/* Crescent moon icon with consistent metal circle border effect */
+.crescent-moon-metal {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  padding: 8px;
+  background: 
+    radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 30%, transparent 70%),
+    linear-gradient(145deg, rgba(255,255,255,0.25) 0%, rgba(150,150,150,0.1) 50%, rgba(255,255,255,0.25) 100%);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -1px 0 rgba(0,0,0,0.15),
+    inset 0 0 0 1px rgba(255,255,255,0.2),
+    0 0 8px rgba(0,0,0,0.12),
+    0 2px 8px rgba(0,0,0,0.08),
+    0 4px 16px rgba(0,0,0,0.06),
+    0 0 20px rgba(255,255,255,0.05);
+  transition: all 0.3s ease;
+}
+
+.crescent-moon-metal:hover {
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    inset 0 -1px 0 rgba(0,0,0,0.2),
+    inset 0 0 0 1px rgba(255,255,255,0.3),
+    0 0 12px rgba(0,0,0,0.15),
+    0 3px 12px rgba(0,0,0,0.1),
+    0 6px 20px rgba(0,0,0,0.08),
+    0 0 25px rgba(255,255,255,0.08);
+  transform: translateY(-1px);
 }
 
 /* Header shadow - lighter than sidebar */
@@ -311,61 +439,89 @@ body {
     0 1px 3px rgba(59, 130, 246, 0.05);
 }
 
-/* Job card styles with subtle glow */
+/* Job card styles with natural glow dissolution - optimized for smooth animations */
 .job-card-glow {
   background: #253140;
-  background: linear-gradient(to top, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.08) 20%, rgba(59, 130, 246, 0.04) 40%, rgba(59, 130, 246, 0.02) 60%, rgba(59, 130, 246, 0.01) 75%, #253140 85%);
-  border: 1px solid #4b5563;
+  background: 
+    radial-gradient(ellipse 100% 50% at bottom, 
+      rgba(59, 130, 246, 0.15) 0%, 
+      rgba(59, 130, 246, 0.12) 10%, 
+      rgba(59, 130, 246, 0.08) 20%, 
+      rgba(59, 130, 246, 0.05) 30%, 
+      rgba(59, 130, 246, 0.03) 40%, 
+      rgba(59, 130, 246, 0.015) 50%, 
+      transparent 60%
+    ), 
+    linear-gradient(to bottom, 
+      #253140 0%, 
+      #232f3d 40%, 
+      #202a37 70%, 
+      #1e2833 100%
+    );
+  border: 1px solid rgba(75, 85, 99, 0.6);
   box-shadow: 
-    inset 0 1px 0 rgba(255,255,255,0.03),
-    inset 0 -1px 0 rgba(0,0,0,0.1),
-    inset 0 -6px 12px rgba(59, 130, 246, 0.08),
-    0 0 6px rgba(0,0,0,0.1),
-    0 2px 8px rgba(0,0,0,0.08),
-    0 4px 15px rgba(0,0,0,0.06),
-    0 8px 32px rgba(0,0,0,0.12),
-    0 12px 48px rgba(0,0,0,0.08);
+    inset 0 1px 0 rgba(255,255,255,0.02),
+    inset 0 -1px 0 rgba(0,0,0,0.08),
+    inset 0 0 20px rgba(59, 130, 246, 0.05),
+    0 0 4px rgba(0,0,0,0.08),
+    0 2px 6px rgba(0,0,0,0.06),
+    0 4px 12px rgba(0,0,0,0.04);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, box-shadow, border-color;
 }
 
 .job-card-glow:hover {
-  background: linear-gradient(to top, rgba(59, 130, 246, 0.16) 0%, rgba(59, 130, 246, 0.11) 20%, rgba(59, 130, 246, 0.06) 40%, rgba(59, 130, 246, 0.03) 60%, rgba(59, 130, 246, 0.015) 75%, #2a3a4a 85%);
+  border: 1px solid rgba(75, 85, 99, 0.8);
   box-shadow: 
-    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.04),
     inset 0 -1px 0 rgba(0,0,0,0.1),
-    inset 0 -8px 16px rgba(59, 130, 246, 0.12),
-    0 0 8px rgba(0,0,0,0.12),
-    0 4px 12px rgba(0,0,0,0.1),
-    0 8px 25px rgba(0,0,0,0.08),
-    0 16px 48px rgba(0,0,0,0.15),
-    0 24px 64px rgba(0,0,0,0.1);
+    inset 0 0 24px rgba(59, 130, 246, 0.08),
+    0 0 6px rgba(0,0,0,0.1),
+    0 4px 8px rgba(0,0,0,0.08),
+    0 8px 16px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
 }
 
 .job-card-glow-light {
   background: #ffffff;
-  background: linear-gradient(to top, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.035) 20%, rgba(59, 130, 246, 0.025) 40%, rgba(59, 130, 246, 0.015) 60%, rgba(59, 130, 246, 0.008) 75%, #ffffff 85%);
-  border: 1px solid #e5e7eb;
+  background: 
+    radial-gradient(ellipse 100% 50% at bottom, 
+      rgba(59, 130, 246, 0.08) 0%, 
+      rgba(59, 130, 246, 0.06) 10%, 
+      rgba(59, 130, 246, 0.04) 20%, 
+      rgba(59, 130, 246, 0.025) 30%, 
+      rgba(59, 130, 246, 0.015) 40%, 
+      rgba(59, 130, 246, 0.008) 50%, 
+      transparent 60%
+    ), 
+    linear-gradient(to bottom, 
+      #ffffff 0%, 
+      #fdfdfd 40%, 
+      #fafafa 70%, 
+      #f8f8f8 100%
+    );
+  border: 1px solid rgba(229, 231, 235, 0.8);
   box-shadow: 
-    inset 0 1px 0 rgba(255,255,255,0.8),
-    inset 0 -1px 0 rgba(0,0,0,0.05),
-    inset 0 -4px 8px rgba(59, 130, 246, 0.04),
-    0 0 4px rgba(0,0,0,0.06),
-    0 2px 8px rgba(0,0,0,0.04),
-    0 4px 12px rgba(0,0,0,0.03),
-    0 8px 24px rgba(0,0,0,0.08),
-    0 12px 32px rgba(0,0,0,0.05);
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -1px 0 rgba(0,0,0,0.03),
+    inset 0 0 16px rgba(59, 130, 246, 0.025),
+    0 0 2px rgba(0,0,0,0.04),
+    0 1px 4px rgba(0,0,0,0.03),
+    0 2px 8px rgba(0,0,0,0.02);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, box-shadow, border-color;
 }
 
 .job-card-glow-light:hover {
-  background: linear-gradient(to top, rgba(59, 130, 246, 0.07) 0%, rgba(59, 130, 246, 0.05) 20%, rgba(59, 130, 246, 0.035) 40%, rgba(59, 130, 246, 0.02) 60%, rgba(59, 130, 246, 0.01) 75%, #f9fafb 85%);
+  border: 1px solid rgba(229, 231, 235, 1);
   box-shadow: 
-    inset 0 1px 0 rgba(255,255,255,0.9),
-    inset 0 -1px 0 rgba(0,0,0,0.05),
-    inset 0 -6px 12px rgba(59, 130, 246, 0.06),
-    0 0 6px rgba(0,0,0,0.08),
-    0 4px 12px rgba(0,0,0,0.06),
-    0 8px 20px rgba(0,0,0,0.04),
-    0 16px 36px rgba(0,0,0,0.1),
-    0 24px 48px rgba(0,0,0,0.06);
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(0,0,0,0.04),
+    inset 0 0 20px rgba(59, 130, 246, 0.04),
+    0 0 4px rgba(0,0,0,0.06),
+    0 2px 6px rgba(0,0,0,0.04),
+    0 4px 12px rgba(0,0,0,0.03);
+  transform: translateY(-1px);
 }
 
 /* Animated dots for placeholder */

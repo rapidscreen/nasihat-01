@@ -27,7 +27,7 @@ export const jobsData: Job[] = [
     tags: ['Matched', 'Remote', 'Design'],
     tagColors: ['bg-green-600', 'bg-slate-600', 'bg-purple-600'],
     status: 'Applied',
-    isSaved: false,
+    isSaved: true,
     location: 'Mountain View, CA',
     salary: 'USD 120,000 - 180,000',
     jobType: 'Remote',
