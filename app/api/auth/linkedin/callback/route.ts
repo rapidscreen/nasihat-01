@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { serviceContainer } from '../../../../../lib/services/ServiceContainer';
+import { serviceContainer } from '@/lib/services/ServiceContainer';
 
 /**
  * LinkedIn OAuth Callback Handler following SOLID principles:

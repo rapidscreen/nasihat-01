@@ -1,43 +1,51 @@
 'use client';
 
 import React, { useState } from 'react';
-import DashboardLayout from '../../../components/DashboardLayout';
+import DashboardLayout from '@/components/DashboardLayout';
+import { useTheme } from '@/components/ThemeProvider';
 
 export default function CallPage() {
   const [isListening, setIsListening] = useState(true);
+  const { isDarkMode } = useTheme();
 
   return (
     <DashboardLayout>
       <div className="h-full">
         {/* Header - Same as other pages */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700" style={{ backgroundColor: '#253140' }}>
-          <h1 className="text-2xl font-medium text-white" style={{ 
-            fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif' 
-          }}>
+        <div className={`flex items-center justify-between px-6 py-4 border-b transition-colors duration-200 ${
+          isDarkMode ? 'border-slate-700 bg-[#253140]' : 'border-gray-200 bg-white'
+        }`}>
+          <h1 className={`text-2xl font-medium transition-colors font-neue-haas ${
+            isDarkMode ? 'text-white' : 'text-[#1b1b1b]'
+          }`}>
             Call Nasihat
           </h1>
           
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-full overflow-hidden metal-shadow">
-              <img src="/icons/avatar-icon.svg" alt="Profile" className="w-full h-full object-cover" />
+              <img src={isDarkMode ? "/icons/avatar-icon.svg" : "/icons/avatar-icon-white-mode.svg"} alt="Profile" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
 
         {/* Main Content - Voice Interface */}
-        <div className="flex flex-col items-center justify-center h-full px-6 py-8 relative" style={{ backgroundColor: '#192636' }}>
+        <div className={`flex flex-col items-center justify-center h-full px-6 py-8 relative transition-colors duration-200 ${
+          isDarkMode ? 'bg-[#192636]' : 'bg-[#fbfbfb]'
+        }`}>
           {/* Current Topic */}
           <div className="mb-8">
-            <p className="text-slate-400 text-sm mb-2 text-center" style={{ 
-              fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif' 
-            }}>
+            <p className={`text-sm mb-2 text-center transition-colors font-neue-haas ${
+              isDarkMode ? 'text-slate-400' : 'text-gray-600'
+            }`}>
               Current Topic:
             </p>
-            <div className="bg-slate-700 rounded-full px-4 py-2 flex items-center space-x-2">
+            <div className={`rounded-full px-4 py-2 flex items-center space-x-2 transition-colors ${
+              isDarkMode ? 'bg-slate-700' : 'bg-white border border-gray-200'
+            }`}>
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              <span className="text-slate-200 text-sm" style={{ 
-                fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif' 
-              }}>
+              <span className={`text-sm transition-colors font-neue-haas ${
+                isDarkMode ? 'text-slate-200' : 'text-[#1b1b1b]'
+              }`}>
                 Getting to know you
               </span>
             </div>
@@ -65,9 +73,9 @@ export default function CallPage() {
           {/* Speaking Indicator */}
           {isListening && (
             <div className="mb-12">
-              <span className="bg-slate-700 text-slate-200 px-4 py-2 rounded-full text-sm" style={{ 
-                fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif' 
-              }}>
+              <span className={`px-4 py-2 rounded-full text-sm transition-colors font-neue-haas ${
+                isDarkMode ? 'bg-slate-700 text-slate-200' : 'bg-white text-[#1b1b1b] border border-gray-200'
+              }`}>
                 Speaking
               </span>
             </div>
@@ -76,8 +84,12 @@ export default function CallPage() {
           {/* Control Buttons */}
           <div className="flex items-center space-x-4 mb-8">
             {/* Up Arrow */}
-            <button className="w-12 h-12 bg-slate-600 hover:bg-slate-500 rounded-full flex items-center justify-center transition-colors">
-              <svg className="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
+              isDarkMode ? 'bg-slate-600 hover:bg-slate-500' : 'bg-gray-200 hover:bg-gray-300'
+            }`}>
+              <svg className={`w-6 h-6 transition-colors ${
+                isDarkMode ? 'text-slate-300' : 'text-gray-600'
+              }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
               </svg>
             </button>
@@ -88,15 +100,23 @@ export default function CallPage() {
             </button>
 
             {/* Pause/Play */}
-            <button className="w-12 h-12 bg-slate-600 hover:bg-slate-500 rounded-full flex items-center justify-center transition-colors">
-              <svg className="w-6 h-6 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+            <button className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
+              isDarkMode ? 'bg-slate-600 hover:bg-slate-500' : 'bg-gray-200 hover:bg-gray-300'
+            }`}>
+              <svg className={`w-6 h-6 transition-colors ${
+                isDarkMode ? 'text-slate-300' : 'text-gray-600'
+              }`} fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
               </svg>
             </button>
 
             {/* Copy */}
-            <button className="w-12 h-12 bg-slate-600 hover:bg-slate-500 rounded-full flex items-center justify-center transition-colors">
-              <svg className="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
+              isDarkMode ? 'bg-slate-600 hover:bg-slate-500' : 'bg-gray-200 hover:bg-gray-300'
+            }`}>
+              <svg className={`w-6 h-6 transition-colors ${
+                isDarkMode ? 'text-slate-300' : 'text-gray-600'
+              }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
             </button>
@@ -118,10 +138,12 @@ export default function CallPage() {
 
           {/* Footer */}
           <div className="absolute bottom-6 right-6">
-            <div className="text-slate-400 text-sm" style={{ 
-              fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif' 
-            }}>
-              POWERED BY <span className="text-orange-400 font-semibold">RAPID</span><span className="text-white font-semibold">SCREEN</span>
+            <div className={`text-sm transition-colors font-neue-haas ${
+              isDarkMode ? 'text-slate-400' : 'text-gray-600'
+            }`}>
+              POWERED BY <span className="text-orange-400 font-semibold">RAPID</span><span className={`font-semibold transition-colors ${
+                isDarkMode ? 'text-white' : 'text-[#1b1b1b]'
+              }`}>SCREEN</span>
             </div>
           </div>
         </div>

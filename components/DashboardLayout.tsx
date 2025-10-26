@@ -4,6 +4,7 @@ import React, { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
+import { useTheme } from '@/components/ThemeProvider';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -20,7 +21,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const menuItems: MenuItem[] = [
     {
@@ -55,12 +56,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
   return (
-    <div className="flex h-screen" style={{ backgroundColor: '#192636' }}>
+    <div className={`flex h-screen transition-colors duration-200 ${
+      isDarkMode ? 'bg-[#192636]' : 'bg-[#fbfbfb]'
+    }`}>
       {/* Mobile sidebar overlay */}
       {isSidebarOpen && (
         <div 
@@ -72,16 +71,20 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       {/* Sidebar */}
       <div className={`${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } fixed inset-y-0 left-0 z-50 w-64 sidebar-shadow transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col border-r border-slate-700`} style={{ backgroundColor: '#253140' }}>
+      } fixed inset-y-0 left-0 z-50 w-64 sidebar-shadow transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col border-r ${
+        isDarkMode ? 'border-slate-700 bg-[#253140]' : 'border-gray-200 bg-white'
+      }`}>
         {/* Logo and Brand Section */}
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center">
             <img 
-              src="/icons/nasihat.ai-dark-mode.svg" 
+              src={isDarkMode ? "/icons/nasihat.ai-dark-mode.svg" : "/icons/nasihat.ai-white-mode.svg"}
               alt="Nasihat.ai" 
               className="w-12 h-12 mr-3 nasihat-logo-glow"
             />
-            <span className="nasihat-brand-text">
+            <span className={`nasihat-brand-text ${
+              isDarkMode ? 'text-white' : 'text-[#1b1b1b]'
+            }`}>
               NASIHAT
             </span>
           </div>
@@ -89,7 +92,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           {/* Close button for mobile */}
           <button
             onClick={() => setIsSidebarOpen(false)}
-            className="lg:hidden p-2 text-slate-400 hover:text-slate-200"
+            className={`lg:hidden p-2 transition-colors ${
+              isDarkMode ? 'text-slate-400 hover:text-slate-200' : 'text-[#1b1b1b] hover:text-[#1b1b1b]'
+            }`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -107,17 +112,29 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                   <Link
                     href={item.href}
                     onClick={() => setIsSidebarOpen(false)}
-                    className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                    className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 font-neue-haas ${
                       isActive
-                        ? 'text-white'
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                        ? isDarkMode 
+                          ? 'text-white bg-[#3a4553]' 
+                          : 'text-[#005bd1] bg-[#f2f7fc]'
+                        : isDarkMode
+                          ? 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                          : 'text-[#1b1b1b] hover:bg-gray-100 hover:text-[#1b1b1b]'
                     }`}
-                    style={{ 
-                      fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif',
-                      ...(isActive ? { backgroundColor: '#3a4553' } : {})
-                    }}
                   >
-                    <span className={`mr-3 ${isActive ? 'text-white' : 'text-slate-400'}`}>
+                    <span className={`mr-3 ${
+                      isActive 
+                        ? isDarkMode ? '' : ''
+                        : isDarkMode ? '' : ''
+                    }`} style={{
+                      filter: isActive 
+                        ? isDarkMode 
+                          ? 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7500%) hue-rotate(197deg) brightness(105%) contrast(104%)'
+                          : 'brightness(0) saturate(100%) invert(17%) sepia(99%) saturate(2143%) hue-rotate(212deg) brightness(97%) contrast(102%)'
+                        : isDarkMode 
+                          ? 'brightness(0) saturate(100%) invert(68%) sepia(8%) saturate(851%) hue-rotate(201deg) brightness(97%) contrast(90%)'
+                          : 'brightness(0) saturate(100%) invert(45%) sepia(6%) saturate(413%) hue-rotate(201deg) brightness(93%) contrast(89%)'
+                    }}>
                       {item.icon}
                     </span>
                     {item.label}
@@ -134,13 +151,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         {/* Dark Mode Toggle */}
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
-            <span className="text-slate-300" style={{ 
-              fontFamily: 'Neue Haas Grotesk Display Pro',
-              fontWeight: 500,
-              fontSize: '14px',
-              lineHeight: '145%',
-              letterSpacing: '0%'
-            }}>
+            <span className={`transition-colors font-neue-haas font-medium text-sm leading-snug ${
+              isDarkMode ? 'text-slate-300' : 'text-[#1b1b1b]'
+            }`}>
               Dark Mode
             </span>
             <div className="relative">
@@ -148,43 +161,27 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 type="checkbox" 
                 className="sr-only" 
                 checked={isDarkMode}
-                onChange={(e) => setIsDarkMode(e.target.checked)}
+                onChange={(e) => toggleTheme()}
                 id="darkModeToggle"
               />
               <label 
                 htmlFor="darkModeToggle" 
                 className="flex items-center cursor-pointer"
               >
-                <div className="relative metal-shadow" style={{
-                  width: '64px',
-                  height: '32px',
-                  background: '#303c4b',
-                  borderRadius: '42.6667px',
-                  padding: '0'
-                }}>
-                  <div 
-                    className="absolute transition-all duration-200 ease-in-out metal-toggle metal-shadow"
-                    style={{
-                      width: '26.67px',
-                      height: '26.67px',
-                      right: isDarkMode ? '2.67px' : 'calc(100% - 29.34px)',
-                      top: '2.67px',
-                      background: '#444f5d',
-                      borderRadius: '26.6667px',
-                      padding: '0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      overflow: 'hidden'
-                    }}
-                  >
+                <div className={`relative metal-shadow w-toggle-track h-toggle-track rounded-toggle-track transition-colors duration-200 ${
+                  isDarkMode ? 'bg-toggle-bg-dark' : 'bg-toggle-bg-light'
+                }`}>
+                  <div className={`absolute transition-all duration-200 ease-in-out metal-toggle metal-shadow w-toggle-circle h-toggle-circle rounded-toggle-circle top-toggle-offset flex items-center justify-center overflow-hidden ${
+                    isDarkMode 
+                      ? 'right-toggle-offset bg-toggle-circle-dark' 
+                      : 'right-[calc(100%-29.34px)] bg-toggle-circle-light'
+                  }`}>
                     <img 
-                      src="/icons/crescent-moon.svg" 
-                      alt="Moon" 
+                      src={isDarkMode ? "/icons/crescent-moon.svg" : "/icons/sun.svg"}
+                      alt={isDarkMode ? "Moon" : "Sun"}
+                      className="w-full h-full"
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        filter: 'brightness(1.2)'
+                        filter: isDarkMode ? 'brightness(1.2)' : 'none'
                       }}
                     />
                   </div>
@@ -195,7 +192,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         </div>
 
         {/* Divider */}
-        <hr className="mx-4 border-slate-700 metal-shadow" />
+        <hr className={`mx-4 metal-shadow ${
+          isDarkMode ? 'border-slate-700' : 'border-gray-200'
+        }`} />
 
         {/* User Profile Section */}
         <div className="px-4 py-4">
@@ -203,19 +202,19 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             <div className="flex items-center">
               {/* Profile Icon */}
               <div className="w-10 h-10 rounded-full overflow-hidden mr-3 metal-shadow">
-                <img src="/icons/avatar-icon.svg" alt="Profile" className="w-full h-full object-cover" />
+                <img src={isDarkMode ? "/icons/avatar-icon.svg" : "/icons/avatar-icon-white-mode.svg"} alt="Profile" className="w-full h-full object-cover" />
               </div>
               
               {/* User Info */}
               <div className="flex-1">
-                <p className="text-sm font-medium text-white" style={{ 
-                  fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif' 
-                }}>
+                <p className={`text-sm font-medium transition-colors font-neue-haas ${
+                  isDarkMode ? 'text-white' : 'text-[#1b1b1b]'
+                }`}>
                   Danial Hadi
                 </p>
-                <p className="text-xs text-slate-400" style={{ 
-                  fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif' 
-                }}>
+                <p className={`text-xs transition-colors font-neue-haas ${
+                  isDarkMode ? 'text-slate-400' : 'text-[#1b1b1b]'
+                }`}>
                   danial@rapidscreen.io
                 </p>
               </div>
@@ -224,7 +223,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             {/* Sign Out Button */}
             <button
               onClick={handleSignOut}
-              className="p-2 text-slate-400 hover:text-slate-200 transition-colors duration-200"
+              className={`p-2 transition-colors duration-200 ${
+                isDarkMode ? 'text-slate-400 hover:text-slate-200' : 'text-[#1b1b1b] hover:text-[#1b1b1b]'
+              }`}
               title="Sign Out"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -236,37 +237,37 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden" style={{ backgroundColor: '#192636' }}>
+      <div className={`flex-1 flex flex-col overflow-hidden transition-colors duration-200 ${
+        isDarkMode ? 'bg-[#192636]' : 'bg-[#fbfbfb]'
+      }`}>
         {/* Mobile header */}
-        <header className="lg:hidden shadow-sm border-b border-slate-700 px-4 py-3" style={{ backgroundColor: '#253140' }}>
+        <header className={`lg:hidden shadow-sm border-b px-4 py-3 transition-colors duration-200 ${
+          isDarkMode ? 'border-slate-700 bg-[#253140]' : 'border-gray-200 bg-white'
+        }`}>
           <div className="flex items-center justify-between">
             <button
               onClick={toggleSidebar}
-              className="p-2 text-slate-400 hover:text-slate-200"
+              className={`p-2 transition-colors ${
+                isDarkMode ? 'text-slate-400 hover:text-slate-200' : 'text-[#1b1b1b] hover:text-[#1b1b1b]'
+              }`}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
             
-            <h1 className="text-lg font-semibold text-white" style={{ 
-              fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif' 
-            }}>
+            <h1 className={`text-lg font-semibold transition-colors font-neue-haas ${
+              isDarkMode ? 'text-white' : 'text-[#1b1b1b]'
+            }`}>
               NASIHAT
             </h1>
-            
-            {/* <div className="w-10 h-10 bg-slate-600 rounded-full flex items-center justify-center profile-icon-shadow">
-              <span className="text-white text-sm font-semibold" style={{ 
-                fontFamily: '"Neue Haas Grotesk Display Pro", -apple-system, BlinkMacSystemFont, sans-serif' 
-              }}>
-                DH
-              </span>
-            </div> */}
           </div>
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto" style={{ backgroundColor: '#192636' }}>
+        <main className={`flex-1 overflow-x-hidden overflow-y-auto transition-colors duration-200 ${
+          isDarkMode ? 'bg-[#192636]' : 'bg-[#fbfbfb]'
+        }`}>
           {children}
         </main>
       </div>

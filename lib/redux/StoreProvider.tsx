@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { Provider } from 'react-redux';
-import { makeStore, AppStore } from './store';
+import { makeStore, AppStore } from '@/lib/redux/store';
 
 /**
  * Redux Provider component following SOLID principles:

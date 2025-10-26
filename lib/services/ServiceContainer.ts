@@ -1,6 +1,6 @@
-import { AuthService } from './AuthService';
-import { UserRepository } from './UserRepository';
-import { LinkedInOAuthService, OAuthServiceFactory } from './LinkedInOAuthService';
+import { AuthService } from '@/lib/services/AuthService';
+import { UserRepository } from '@/lib/services/UserRepository';
+import { LinkedInOAuthService, OAuthServiceFactory } from '@/lib/services/LinkedInOAuthService';
 import { IAuthService, IUserRepository, IOAuthService } from '@/types/auth';
 
 /**

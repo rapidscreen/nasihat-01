@@ -1,15 +1,5 @@
 /**
- * Authentication interfaces following SOLID export interface IAuthService {
-  loginUser(credentials: ILoginCredentials): Promise<{ user: IUser; token: string }>;
-  registerUser(credentials: ILoginCredentials): Promise<{ user: IUser; token: string }>;
-  authenticateUser(credentials: ILoginCredentials): Promise<{ user: IUser; token: string }>;
-  authenticateWithOAuth(oauthData: IOAuthUserData, provider: string): Promise<{ user: IUser; token: string }>;
-  validateToken(token: string): Promise<IUser | null>;
-  refreshToken(token: string): Promise<string | null>;
-  revokeToken(token: string): Promise<boolean>;
-  hashPassword(password: string): Promise<string>;
-  comparePassword(password: string, hashedPassword: string): Promise<boolean>;
-}s:
+ * Authentication interfaces following SOLID principles:
  * - Interface Segregation: Clear separation of concerns
  * - Dependency Inversion: High-level modules depend on abstractions
  */
@@ -66,10 +56,16 @@ export interface IAuthService {
   revokeToken(token: string): Promise<boolean>;
   hashPassword(password: string): Promise<string>;
   comparePassword(password: string, hashedPassword: string): Promise<boolean>;
+  handleLinkedInOAuth(oauthUserData: IOAuthUserData): Promise<{ user: IUser; token: string }>;
+  getCurrentUser(token: string): Promise<IUser>;
+  login(credentials: ILoginCredentials): Promise<{ user: IUser; token: string }>;
+  loginOrRegister(credentials: ILoginCredentials & { name?: string }): Promise<{ user: IUser; token: string }>;
+  loginWithLinkedIn(code: string): Promise<{ user: IUser; token: string }>;
+  logout(): Promise<void>;
 }
 
 export interface IOAuthService {
   exchangeCodeForToken(code: string): Promise<string>;
   getUserData(accessToken: string): Promise<IOAuthUserData>;
-  generateAuthUrl(): string;
+  getAuthUrl(): string;
 }

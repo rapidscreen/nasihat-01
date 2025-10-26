@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authSlice } from './features/auth/authSlice';
+import { authSlice } from '@/lib/redux/features/auth/authSlice';
 
 /**
  * Redux store configuration following SOLID principles:

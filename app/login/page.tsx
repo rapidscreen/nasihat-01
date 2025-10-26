@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { NasihatLogo } from '@/components/NasihatLogo';
@@ -177,7 +177,8 @@ const animationStyles = `
  * - Open/Closed: Easy to extend with new authentication methods
  * - Dependency Inversion: Depends on Redux abstractions
  */
-export default function LoginPage() {
+// Login component that uses search params
+function LoginPageContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -549,5 +550,18 @@ export default function LoginPage() {
         </span>
       </div>
     </BatikBackground>
+  );
+}
+
+// Main export with Suspense wrapper
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="text-lg text-gray-600">Loading...</div>
+      </div>
+    }>
+      <LoginPageContent />
+    </Suspense>
   );
 }
