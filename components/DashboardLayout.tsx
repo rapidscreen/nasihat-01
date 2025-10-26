@@ -21,28 +21,39 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
+
+  const handleThemeToggle = () => {
+    setIsTransitioning(true);
+    toggleTheme();
+    
+    // Remove transition class after animation completes
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 3000);
+  };
 
   const menuItems: MenuItem[] = [
     {
       href: '/dashboard/call',
       label: 'Call Nasihat',
       icon: (
-        <img src="/icons/call.svg" alt="Call" className="w-5 h-5" />
+        <img src="/icons/call.svg" alt="Call" className="w-5 h-5 icon-shadow" />
       )
     },
     {
-      href: '/dashboard/jobs',
+      href: '/dashboard/jobs/all',
       label: 'Jobs',
       icon: (
-        <img src="/icons/briefcase.svg" alt="Jobs" className="w-5 h-5" />
+        <img src="/icons/briefcase.svg" alt="Jobs" className="w-5 h-5 icon-shadow" />
       )
     },
     {
       href: '/dashboard/my-profile',
       label: 'My Profile',
       icon: (
-        <img src="/icons/profile-circle.svg" alt="Profile" className="w-5 h-5" />
+        <img src="/icons/profile-circle.svg" alt="Profile" className="w-5 h-5 icon-shadow" />
       )
     }
   ];
@@ -57,7 +68,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className={`flex h-screen transition-colors duration-200 ${
+    <div className={`flex h-screen theme-transition ${isTransitioning ? 'transitioning' : ''} ${
       isDarkMode ? 'bg-[#192636]' : 'bg-[#fbfbfb]'
     }`}>
       {/* Mobile sidebar overlay */}
@@ -71,17 +82,19 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       {/* Sidebar */}
       <div className={`${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } fixed inset-y-0 left-0 z-50 w-64 sidebar-shadow transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col border-r ${
+      } fixed inset-y-0 left-0 z-50 w-64 sidebar-shadow ${isDarkMode ? '' : 'light-mode'} transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col border-r ${
         isDarkMode ? 'border-slate-700 bg-[#253140]' : 'border-gray-200 bg-white'
       }`}>
         {/* Logo and Brand Section */}
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center">
-            <img 
-              src={isDarkMode ? "/icons/nasihat.ai-dark-mode.svg" : "/icons/nasihat.ai-white-mode.svg"}
-              alt="Nasihat.ai" 
-              className="w-12 h-12 mr-3 nasihat-logo-glow"
-            />
+            <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
+              <img 
+                src={isDarkMode ? "/icons/nasihat.ai-dark-mode.svg" : "/icons/nasihat.ai-white-mode.svg"}
+                alt="Nasihat.ai" 
+                className={`w-full h-full object-cover ${isDarkMode ? 'nasihat-logo-glow' : 'nasihat-logo-glow-light'}`}
+              />
+            </div>
             <span className={`nasihat-brand-text ${
               isDarkMode ? 'text-white' : 'text-[#1b1b1b]'
             }`}>
@@ -106,7 +119,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <nav className="flex-1 px-4 py-6">
           <ul className="space-y-2">
             {menuItems.map((item) => {
-              const isActive = pathname === item.href;
+              // Check if current path matches or starts with the menu item path
+              const isActive = item.href === '/dashboard/jobs' 
+                ? pathname.startsWith('/dashboard/jobs')
+                : pathname === item.href;
               return (
                 <li key={item.href}>
                   <Link
@@ -161,27 +177,41 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 type="checkbox" 
                 className="sr-only" 
                 checked={isDarkMode}
-                onChange={(e) => toggleTheme()}
+                onChange={handleThemeToggle}
                 id="darkModeToggle"
               />
               <label 
                 htmlFor="darkModeToggle" 
                 className="flex items-center cursor-pointer"
               >
-                <div className={`relative metal-shadow w-toggle-track h-toggle-track rounded-toggle-track transition-colors duration-200 ${
-                  isDarkMode ? 'bg-toggle-bg-dark' : 'bg-toggle-bg-light'
-                }`}>
-                  <div className={`absolute transition-all duration-200 ease-in-out metal-toggle metal-shadow w-toggle-circle h-toggle-circle rounded-toggle-circle top-toggle-offset flex items-center justify-center overflow-hidden ${
-                    isDarkMode 
-                      ? 'right-toggle-offset bg-toggle-circle-dark' 
-                      : 'right-[calc(100%-29.34px)] bg-toggle-circle-light'
-                  }`}>
+                <div 
+                  className={`relative toggle-track-shadow w-16 h-8 rounded-full ${
+                    isDarkMode ? 'bg-[#2a3441]' : 'bg-[#005bd1]'
+                  }`}
+                  style={{
+                    transition: 'background-color 2s ease-in-out'
+                  }}
+                >
+                  <div 
+                    className={`absolute w-7 h-7 rounded-full top-0.5 flex items-center justify-center overflow-hidden ${
+                      isDarkMode 
+                        ? 'right-0.5 bg-[#3a4450]' 
+                        : 'left-0.5 bg-white'
+                    }`}
+                    style={{
+                      transition: 'all 2s ease-in-out',
+                      boxShadow: isDarkMode 
+                        ? 'inset 0 1px 0 rgba(255,255,255,0.1), 0 1px 3px rgba(0,0,0,0.3)'
+                        : 'inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 3px rgba(0,0,0,0.2)'
+                    }}
+                  >
                     <img 
                       src={isDarkMode ? "/icons/crescent-moon.svg" : "/icons/sun.svg"}
                       alt={isDarkMode ? "Moon" : "Sun"}
-                      className="w-full h-full"
+                      className={`${isDarkMode ? "w-full h-full" : "w-4 h-4 sun-icon-shadow"}`}
                       style={{
-                        filter: isDarkMode ? 'brightness(1.2)' : 'none'
+                        filter: isDarkMode ? 'brightness(0.7) contrast(0.8) opacity(0.85)' : 'none',
+                        transition: 'all 2s ease-in-out, filter 2s ease-in-out'
                       }}
                     />
                   </div>
@@ -192,7 +222,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         </div>
 
         {/* Divider */}
-        <hr className={`mx-4 metal-shadow ${
+        <hr className={`mx-4 metal-shadow sidebar-hr-shadow ${
           isDarkMode ? 'border-slate-700' : 'border-gray-200'
         }`} />
 
@@ -201,7 +231,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               {/* Profile Icon */}
-              <div className="w-10 h-10 rounded-full overflow-hidden mr-3 metal-shadow">
+              <div className="w-10 h-10 rounded-full overflow-hidden mr-3 metal-shadow avatar-icon-shadow">
                 <img src={isDarkMode ? "/icons/avatar-icon.svg" : "/icons/avatar-icon-white-mode.svg"} alt="Profile" className="w-full h-full object-cover" />
               </div>
               
@@ -241,7 +271,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         isDarkMode ? 'bg-[#192636]' : 'bg-[#fbfbfb]'
       }`}>
         {/* Mobile header */}
-        <header className={`lg:hidden shadow-sm border-b px-4 py-3 transition-colors duration-200 ${
+        <header className={`lg:hidden shadow-sm border-b px-4 py-3 transition-colors duration-200 header-shadow ${
           isDarkMode ? 'border-slate-700 bg-[#253140]' : 'border-gray-200 bg-white'
         }`}>
           <div className="flex items-center justify-between">

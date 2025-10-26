@@ -15,25 +15,40 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nasihat.ai - AI-Powered Advisory Platform",
-  description: "Your intelligent advisory companion powered by AI. Get personalized insights and recommendations.",
-  keywords: "AI, advisory, nasihat, artificial intelligence, recommendations, insights",
+  title: "Nasihat.ai - AI-Powered Career Advisor",
+  description: "Your intelligent career companion powered by AI. Get personalized job recommendations, career insights, and professional guidance.",
+  keywords: "AI, career advisor, job search, nasihat, artificial intelligence, career guidance, job recommendations, professional development",
   authors: [{ name: "Nasihat.ai Team" }],
   creator: "Nasihat.ai",
   publisher: "Nasihat.ai",
   robots: "index, follow",
+  icons: {
+    icon: [
+      {
+        url: "/icons/nasihat.ai-white-mode.svg",
+        type: "image/svg+xml",
+      },
+      {
+        url: "/icons/nasihat.ai-dark-mode.svg",
+        type: "image/svg+xml",
+        media: "(prefers-color-scheme: dark)",
+      }
+    ],
+    shortcut: "/icons/nasihat.ai-white-mode.svg",
+    apple: "/icons/nasihat.ai-white-mode.svg",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://nasihat.ai",
-    title: "Nasihat.ai - AI-Powered Advisory Platform",
-    description: "Your intelligent advisory companion powered by AI",
+    title: "Nasihat.ai - AI-Powered Career Advisor",
+    description: "Your intelligent career companion powered by AI. Find your dream job with personalized guidance.",
     siteName: "Nasihat.ai",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nasihat.ai - AI-Powered Advisory Platform",
-    description: "Your intelligent advisory companion powered by AI",
+    title: "Nasihat.ai - AI-Powered Career Advisor",
+    description: "Your intelligent career companion powered by AI. Find your dream job with personalized guidance.",
     creator: "@nasihatai",
   },
 };

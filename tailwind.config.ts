@@ -55,6 +55,11 @@ const config: Config = {
       spacing: {
         'toggle-offset': '2.67px',
       },
+      inset: {
+        'toggle-offset': '2.67px',
+        'left-toggle-offset': '2.67px',
+        'right-toggle-offset': '2.67px',
+      },
     },
   },
   plugins: [],
